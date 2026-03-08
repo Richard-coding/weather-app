@@ -1,40 +1,35 @@
 import Logo from "../../assets/images/logo.svg";
 import Dropdown from "../ui/Dropdown";
 
-const itemsDropdown = [
+const items = [
   {
-    key: "Temperature",
-    options: ["Celsius (ºC)", "Fahrenheit (ºF)"],
+    label: "Temperature",
+    options: [
+      { unit: "Celsius (ºC)", value: "celcius_unit" },
+      { unit: "Fahrenheit (ºF)", value: "fahrenheit_unit" },
+    ],
   },
   {
-    key: "Windspeed",
-    options: ["km/h", "mph"],
+    label: "Windspeed",
+    options: [
+      { unit: "km/h", value: "kmh" },
+      { unit: "mph", value: "mph" },
+    ],
   },
   {
-    key: "Precipitation",
-    options: ["Millimeters (mm)", "Inches (in)"],
+    label: "Precipitation",
+    options: [
+      { unit: "Millimeters (mm)", value: "millimeters_mm" },
+      { unit: "Inches (in)", value: "inches_in" },
+    ],
   },
-  {
-    id: temperature,
-    label: ""
-  }
-];
-
-const itemsDays = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
 ];
 
 const Header = () => {
   return (
     <header className="flex justify-between items-center">
       <img src={Logo} alt="logo" className="w-[137px] h-7" />
-      <Dropdown items={itemsDropdown} days={itemsDays} />
+      <Dropdown items={items} />
     </header>
   );
 };

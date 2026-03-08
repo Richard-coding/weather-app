@@ -1,29 +1,29 @@
-import React from "react";
+const WeatherDetails = ({ data }) => {
+  if (!data) return null;
 
-const details = [
-  {
-    key: "Feels Like",
-    value: 64,
-    unit: "º",
-  },
-  {
-    key: "Humidty",
-    value: 46,
-    unit: "%",
-  },
-  {
-    key: "Wind",
-    value: 9,
-    unit: " mph",
-  },
-  {
-    key: "Preciptation",
-    value: 0,
-    unit: " in",
-  },
-];
+  const details = [
+    {
+      key: "Feels Like",
+      value: data?.current?.apparent_temperature,
+      unit: data?.current_units?.apparent_temperature,
+    },
+    {
+      key: "Humidty",
+      value: data?.current?.relative_humidity_2m,
+      unit: data?.current_units?.relative_humidity_2m,
+    },
+    {
+      key: "Wind",
+      value: data?.current?.wind_speed_10m,
+      unit: data?.current_units?.wind_speed_10m,
+    },
+    {
+      key: "Preciptation",
+      value: data?.current?.precipitation,
+      unit: data?.current_units?.precipitation,
+    },
+  ];
 
-const WeatherDetails = () => {
   return (
     <section
       className="grid grid-cols-2 md:grid-cols-4
@@ -36,8 +36,7 @@ const WeatherDetails = () => {
         >
           <p className="mb-6 text-preset-6 text-neutral-200">{item.key}</p>
           <p className="text-preset-3">
-            {item.value}
-            {item.unit}
+            {item.value} <span>{item.unit}</span>
           </p>
         </div>
       ))}
