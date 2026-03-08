@@ -3,8 +3,13 @@ import Button from "./Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Config from "../../assets/images/icon-units.svg?react";
 
-const Dropdown = ({ items, days }) => {
+const Dropdown = ({ items }) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [filter, setFilter] = React.useState(null);
+
+  function handleSelected(item) {
+    console.log(item.value);
+  }
 
   return (
     <article className="relative">
@@ -17,29 +22,29 @@ const Dropdown = ({ items, days }) => {
       </Button>
       {isOpen && (
         <div className="absolute mt-[10px] right-0 rounded-12 border-neutral-600 border-[1px] border-solid bg-neutral-800 px-2 py-[6px] min-w-[214px] grid grid-cols-1 gap-1 z-50">
-          <ul>
-            <li className="text-preset-7 px-2 py-[10px] hover:bg-neutral-700 rounded-8">
-              Switch to imperial
-            </li>
-          </ul>
-          {/* Alert switch to imperial, state because on click switch to metric*/}
-          {items.map((item, index) => (
+          <button className="text-preset-7 px-2 py-[10px] hover:bg-neutral-700 rounded-8 text-start">
+            Switch to imperial
+          </button>
+          {items?.map((item, index) => (
             <ul key={index}>
               <li className="text-neutral-300 text-preset-8 px-2 pt-[6px]">
-                {item.key}
+                {item.label}
               </li>
               <li>
-                {item?.options?.map((element, index) => (
+                {item.options?.map((item, index) => (
                   <ul key={index}>
-                    <li className="hover:bg-neutral-700 rounded-8 text-preset-7 px-2 py-[10px] ">
-                      {element}
+                    <li
+                      className="hover:bg-neutral-700 rounded-8 text-preset-7 px-2 py-[10px]"
+                      onClick={() => handleSelected(item)}
+                    >
+                      {item.unit}
                     </li>
                   </ul>
                 ))}
               </li>
             </ul>
           ))}
-          {isOpen && (
+          {/* {isOpen && (
             <div className="absolute bg-neutral-800 border-neutral-600 border-solid border-[1px] w-[214px] rounded-12 text-preset-7 -bottom-60 -left-6 p-2">
               {days.map((element, index) => (
                 <ul key={index}>
@@ -49,7 +54,7 @@ const Dropdown = ({ items, days }) => {
                 </ul>
               ))}
             </div>
-          )}
+          )} */}
         </div>
       )}
     </article>

@@ -1,79 +1,22 @@
-import React from "react";
 import Button from "../ui/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
-import DrizzleIcon from "../../assets/images/icon-drizzle.webp";
-import FogIcon from "../../assets/images/icon-fog.webp";
-import OvercastIcon from "../../assets/images/icon-overcast.webp";
-import RainIcon from "../../assets/images/icon-rain.webp";
-import SunnyIcon from "../../assets/images/icon-sunny.webp";
-import StormIcon from "../../assets/images/icon-storm.webp";
-import SnowIcon from "../../assets/images/icon-snow.webp";
-import PartlyCloudIcon from "../../assets/images/icon-partly-cloudy.webp";
+import Icons from "./Icons";
 
-const dayItems = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const HourlyForecast = ({ hourly, hourly_units }) => {
+  const formatHour = (time) => {
+    const date = new Date(time);
 
-const WEATHER_ICONS = {
-  drizzle: DrizzleIcon,
-  fog: FogIcon,
-  overcast: OvercastIcon,
-  partly: PartlyCloudIcon,
-  rain: RainIcon,
-  snow: SnowIcon,
-  storm: StormIcon,
-  sunny: SunnyIcon,
-};
+    let hour = date.getHours();
+    const period = hour >= 12 ? "PM" : "AM";
 
-const hourtlyItems = [
-  {
-    condition: "storm",
-    hour: 3,
-    period: "day",
-    temperature: 56,
-  },
-  {
-    condition: "partly",
-    hour: 4,
-    period: "night",
-    temperature: 56,
-  },
-  {
-    condition: "partly",
-    hour: 3,
-    period: "night",
-    temperature: 56,
-  },
-  {
-    condition: "partly",
-    hour: 3,
-    period: "night",
-    temperature: 56,
-  },
-  {
-    condition: "partly",
-    hour: 3,
-    period: "night",
-    temperature: 56,
-  },
-  {
-    condition: "partly",
-    hour: 3,
-    period: "night",
-    temperature: 56,
-  },
-];
+    hour = hour % 12;
+    hour = hour === 0 ? 12 : hour;
 
-const ItemsHourty = [{ icon: "sunny", hour: 3, temperature: 68 }];
-
-const HourlyForecast = () => {
-  const [open, setOpen] = React.useState(false);
+    return {
+      hour,
+      period,
+    };
+  };
 
   return (
     <section className="grid gap-4 bg-neutral-800 px-4 py-5 rounded-20">
@@ -85,26 +28,33 @@ const HourlyForecast = () => {
         </Button>
       </div>
 
-      {hourtlyItems.map((item, index) => (
-        <div
-          key={index}
-          className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center"
-        >
-          <div className="flex items-center gap-2">
-            <img
-              src={WEATHER_ICONS[item.condition]}
-              alt={item.condition}
-              className="w-10 h-10"
-            />
-            <div className="flex gap-[6px] text-preset-5">
-              <p>{item.hour}</p>
-              <p>{item.period === "day" ? "AM" : "PM"}</p>
-            </div>
-          </div>
+      {hourly?.time?.slice(0, 7).map((time, index) => {
+        const { hour, period } = formatHour(time);
 
-          <p className="text-preset-7">{item.temperature}º</p>
-        </div>
-      ))}
+        return (
+          <div
+            key={index}
+            className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center"
+          >
+            <div className="flex items-center gap-2">
+              <Icons
+                weatherCode={hourly.weather_code[index]}
+                className="w-10 h-10"
+              />
+
+              <div className="flex gap-[6px] text-preset-5">
+                <p>{hour}</p>
+                <p>{period}</p>
+              </div>
+            </div>
+
+            <p className="text-preset-7">
+              {hourly?.apparent_temperature[index]}
+              {hourly_units?.apparent_temperature}
+            </p>
+          </div>
+        );
+      })}
     </section>
   );
 };
