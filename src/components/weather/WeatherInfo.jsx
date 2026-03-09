@@ -14,7 +14,7 @@ const WeatherInfo = ({ data, selectedCity }) => {
   return (
     <section>
       <div className="bg-mobile md:bg-desktop text-center bg-cover flex flex-wrap items-center md:justify-between gap-4 px-6 py-20 rounded-16">
-        <div className="text-center">
+        <div className="mx-auto md:mx-0">
           <p className="text-preset-4">
             {selectedCity.capital}, {selectedCity.country}
           </p>
@@ -25,7 +25,7 @@ const WeatherInfo = ({ data, selectedCity }) => {
             weatherCode={data?.current?.weather_code}
             className="w-[120px] h-[120px]"
           />
-          <p className="text-preset-1">
+          <p className="text-5xl xs:text-preset-1">
             {data?.current?.temperature_2m}
             {data?.current_units?.temperature_2m}
           </p>

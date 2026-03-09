@@ -51,7 +51,7 @@ const Home = () => {
   const [apiData, setApiData] = useState({});
   const [selectedCity, setSelectedCity] = useState(cities[0]);
 
-  const handleFetchApi = async (city, dropdown) => {
+  const handleFetchApi = async (city) => {
     try {
       const response = await fetch(
         `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=temperature_2m_max,temperature_2m_min,rain_sum,showers_sum,snowfall_sum,precipitation_sum,weather_code&hourly=apparent_temperature,rain,showers,snowfall,snow_depth,weather_code&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,wind_speed_10m,weather_code`,
@@ -63,7 +63,7 @@ const Home = () => {
 
   useEffect(() => {
     handleFetchApi(selectedCity);
-  }, []);
+  }, [selectedCity]);
 
   return (
     <Container>
@@ -73,10 +73,7 @@ const Home = () => {
         How`s the sky looking today?
       </h1>
 
-      <SearchBar
-        selectedCity={selectedCity}
-        setSelectedCity={setSelectedCity}
-      />
+      <SearchBar cities={cities} setSelectedCity={setSelectedCity} />
       <Content data={apiData} selectedCity={selectedCity} />
     </Container>
   );
