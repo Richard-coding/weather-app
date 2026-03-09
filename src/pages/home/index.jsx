@@ -3,6 +3,7 @@ import Header from "../../components/layout/Header";
 import Content from "../../components/layout/Content";
 import SearchBar from "../../components/search/SearchBar";
 import { useState, useEffect } from "react";
+import { buildWeatherUrl } from "../../services/buildWeatherUrl";
 
 const cities = [
   {
@@ -47,27 +48,34 @@ const cities = [
   },
 ];
 
+const units = {
+  temperature: "celsius",
+  windspeed: "kmh",
+  precipitation: "mm",
+};
+
 const Home = () => {
   const [apiData, setApiData] = useState({});
   const [selectedCity, setSelectedCity] = useState(cities[0]);
+  const [unit, setUnit] = useState(units);
 
   const handleFetchApi = async (city) => {
     try {
-      const response = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${city.latitude}&longitude=${city.longitude}&daily=temperature_2m_max,temperature_2m_min,rain_sum,showers_sum,snowfall_sum,precipitation_sum,weather_code&hourly=apparent_temperature,rain,showers,snowfall,snow_depth,weather_code&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall,wind_speed_10m,weather_code`,
-      );
+      const response = await fetch(buildWeatherUrl(city, unit));
       const json = await response.json();
       setApiData(json);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     handleFetchApi(selectedCity);
-  }, [selectedCity]);
+  }, [selectedCity, unit]);
 
   return (
     <Container>
-      <Header />
+      <Header unit={unit} setUnit={setUnit} />
 
       <h1 className="text-center text-6xl font-medium my-12">
         How`s the sky looking today?

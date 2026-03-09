@@ -1,35 +1,38 @@
 import Logo from "../../assets/images/logo.svg";
 import Dropdown from "../ui/Dropdown";
 
-const items = [
+const dropDownList = [
   {
     label: "Temperature",
+    key: "temperature",
     options: [
-      { unit: "Celsius (ºC)", value: "celcius_unit" },
-      { unit: "Fahrenheit (ºF)", value: "fahrenheit_unit" },
+      { label: "Celsius (°C)", value: "celsius" },
+      { label: "Fahrenheit (°F)", value: "fahrenheit" },
     ],
   },
   {
     label: "Windspeed",
+    key: "windspeed",
     options: [
-      { unit: "km/h", value: "kmh" },
-      { unit: "mph", value: "mph" },
+      { label: "km/h", value: "kmh" },
+      { label: "mph", value: "mph" },
     ],
   },
   {
     label: "Precipitation",
+    key: "precipitation",
     options: [
-      { unit: "Millimeters (mm)", value: "millimeters_mm" },
-      { unit: "Inches (in)", value: "inches_in" },
+      { label: "Millimeters (mm)", value: "mm" },
+      { label: "Inches (in)", value: "inch" },
     ],
   },
 ];
 
-const Header = () => {
+const Header = ({ unit, setUnit }) => {
   return (
     <header className="flex justify-between items-center">
       <img src={Logo} alt="logo" className="w-[137px] h-7" />
-      <Dropdown items={items} />
+      <Dropdown dropDownList={dropDownList} unit={unit} setUnit={setUnit} />
     </header>
   );
 };
