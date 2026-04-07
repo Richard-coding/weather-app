@@ -1,17 +1,38 @@
-import React from "react";
+import { useState } from "react";
 import Button from "./Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Config from "../../assets/images/icon-units.svg?react";
 import Check from "../../assets/images/icon-checkmark.svg?react";
 
-const Dropdown = ({ dropDownList, unit, setUnit }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+const Dropdown = ({ options, unit, setUnit }) => {
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleSelectUnit = (key, value) => {
     setUnit((prevUnit) => ({
       ...prevUnit,
       [key]: value,
     }));
+  };
+
+  const handleToggleUnits = () => {
+    const isMetric =
+      unit.temperature === "celsius" &&
+      unit.windspeed === "kmh" &&
+      unit.precipitation === "mm";
+
+    if (isMetric) {
+      setUnit({
+        temperature: "fahrenheit",
+        windspeed: "mph",
+        precipitation: "inch",
+      });
+    } else {
+      setUnit({
+        temperature: "celsius",
+        windspeed: "kmh",
+        precipitation: "mm",
+      });
+    }
   };
 
   return (
@@ -25,58 +46,52 @@ const Dropdown = ({ dropDownList, unit, setUnit }) => {
       </Button>
 
       {isOpen && (
-        <div className="absolute mt-[10px] right-0 rounded-12 border-neutral-600 border-[1px] border-solid bg-neutral-800 px-2 py-[6px] min-w-[214px] grid grid-cols-1 gap-1 z-50">
-          <button className="text-preset-7 px-2 py-[10px] hover:bg-neutral-700 rounded-8 text-start">
-            Switch to imperial
+        <div className="absolute mt-[10px] right-0 rounded-12 border-neutral-600 border-[1px] border-solid bg-neutral-800 px-2 py-[6px] min-w-[214px] grid grid-cols-1 gap-[10px] z-50">
+          <button
+            className={`text-preset-7 px-2 py-[10px] rounded-8 text-start w-full flex gap-[10px] items-center justify-between ${
+              unit.temperature ? "bg-neutral-700" : "hover:bg-neutral-700"
+            }`}
+            onClick={() => handleToggleUnits()}
+          >
+            <span>
+              Switch to {unit.temperature === "celsius" ? "Imperial" : "Metric"}
+            </span>
+            {unit.temperature && <Check className="w-4 h-4" />}
           </button>
 
-          {dropDownList?.map((group) => (
-            <ul key={group.key}>
-              <li className="text-neutral-300 text-preset-8 px-2 pt-[6px]">
+          {options?.map((group, index) => (
+            <div key={group.key} className="flex flex-col gap-1">
+              <p className="text-neutral-300 text-preset-8 pt-[5px] px-1">
                 {group.label}
-              </li>
+              </p>
 
-              <li>
+              <div>
                 {group.options?.map((option) => {
                   const isSelected = unit[group.key] === option.value;
 
                   return (
-                    <ul key={option.value}>
-                      <li>
-                        <button
-                          className={`rounded-8 text-preset-7 px-2 py-[10px] w-full text-start flex items-center justify-between ${
-                            isSelected
-                              ? "bg-neutral-700"
-                              : "hover:bg-neutral-700"
-                          }`}
-                          onClick={() =>
-                            handleSelectUnit(group.key, option.value)
-                          }
-                        >
-                          <span>{option.label}</span>
-                          {isSelected && (
-                            <Check className="w-[14px] h-[14px]" />
-                          )}
-                        </button>
-                      </li>
-                    </ul>
+                    <div key={option.value}>
+                      <button
+                        className={`flex rounded-8 text-preset-7 px-2 py-2 w-full text-start items-center justify-between mb-1 ${
+                          isSelected ? "bg-neutral-700" : "hover:bg-neutral-700"
+                        }`}
+                        onClick={() => {
+                          handleSelectUnit(group.key, option.value);
+                        }}
+                      >
+                        <span>{option.label}</span>
+                        {isSelected && <Check className="w-4 h-4" />}
+                      </button>
+                    </div>
                   );
                 })}
-              </li>
-            </ul>
-          ))}
-
-          {/* {isOpen && (
-              <div className="absolute bg-neutral-800 border-neutral-600 border-solid border-[1px] w-[214px] rounded-12 text-preset-7 -bottom-60 -left-6 p-2">
-                {days.map((element, index) => (
-                  <ul key={index}>
-                    <li className=" px-2 py-[10px] hover:bg-neutral-700 rounded-8">
-                      {element}
-                    </li>
-                  </ul>
-                ))}
               </div>
-            )} */}
+
+              {index !== options.length - 1 && (
+                <div className="w-full h-px bg-neutral-600"></div>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </article>
