@@ -27,7 +27,7 @@ const WeatherDetails = ({ data }) => {
   return (
     <section
       className="grid grid-cols-2 md:grid-cols-4
- gap-4 mt-5 "
+ gap-4 mt-8 "
     >
       {details.map((item, index) => (
         <div
