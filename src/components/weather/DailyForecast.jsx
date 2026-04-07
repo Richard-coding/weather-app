@@ -2,7 +2,7 @@ import Icons from "./Icons";
 
 const Forecast = ({ daily }) => {
   return (
-    <section className="my-8 lg:mb-0">
+    <section className="my-12 lg:mb-0">
       <p className="mb-5">Daily forecast</p>
 
       <div className="grid grid-cols-3 md:grid-cols-7 gap-4">

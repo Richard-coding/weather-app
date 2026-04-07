@@ -1,7 +1,7 @@
 import Logo from "../../assets/images/logo.svg";
 import Dropdown from "../ui/Dropdown";
 
-const dropDownList = [
+const options = [
   {
     label: "Temperature",
     key: "temperature",
@@ -32,7 +32,7 @@ const Header = ({ unit, setUnit }) => {
   return (
     <header className="flex justify-between items-center">
       <img src={Logo} alt="logo" className="w-[137px] h-7" />
-      <Dropdown dropDownList={dropDownList} unit={unit} setUnit={setUnit} />
+      <Dropdown options={options} unit={unit} setUnit={setUnit} />
     </header>
   );
 };
