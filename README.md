@@ -12,7 +12,7 @@ A weather application built with React that allows users to search for real-time
 
 ## 🖥️ Preview
 
-![Preview](./preview.jpg)
+![Preview](./preview.png)
 
 ---
 
