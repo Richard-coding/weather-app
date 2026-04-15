@@ -18,8 +18,8 @@ const Forecast = ({ daily }) => {
             </p>
             <Icons weatherCode={daily.weather_code[index]} className="h-[60px] w-[60px] mx-auto" />
 
-            <div className="flex justify-between text-preset-6">
-              <p className="text-preset-7">{daily.temperature_2m_min[index]}º</p>
+            <div className="flex justify-around text-preset-6">
+              <p className="text-preset-7">{daily.temperature_2m_max[index]}º</p>
               <p className="text-preset-7 text-neutral-200">{daily.temperature_2m_min[index]}º</p>
             </div>
           </div>
