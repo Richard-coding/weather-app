@@ -1,11 +1,41 @@
-import { useState } from "react";
-import Button from "./Button";
+import { useContext, useState } from "react";
+import Button from "../common/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Config from "../../assets/images/icon-units.svg?react";
 import Check from "../../assets/images/icon-checkmark.svg?react";
+import { WeatherContext } from "../../context/WeatherContext";
 
-const Dropdown = ({ options, unit, setUnit }) => {
+const options = [
+  {
+    label: "Temperature",
+    key: "temperature",
+    options: [
+      { label: "Celsius (°C)", value: "celsius" },
+      { label: "Fahrenheit (°F)", value: "fahrenheit" },
+    ],
+  },
+  {
+    label: "Windspeed",
+    key: "windspeed",
+    options: [
+      { label: "km/h", value: "kmh" },
+      { label: "mph", value: "mph" },
+    ],
+  },
+  {
+    label: "Precipitation",
+    key: "precipitation",
+    options: [
+      { label: "Millimeters (mm)", value: "mm" },
+      { label: "Inches (in)", value: "inch" },
+    ],
+  },
+];
+
+const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { unit, setUnit } = useContext(WeatherContext);
 
   const handleSelectUnit = (key, value) => {
     setUnit((prevUnit) => ({

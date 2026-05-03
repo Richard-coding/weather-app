@@ -1,4 +1,4 @@
-import Button from "../ui/Button";
+import Button from "../common/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 
 const HourlyForecast = () => {
@@ -19,7 +19,7 @@ const HourlyForecast = () => {
         return (
           <div
             key={index}
-            className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center max-h-[60px] h-[58px] animate-pulse"
+            className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center max-h-[60px] h-[60px] animate-pulse"
           ></div>
         );
       })}
