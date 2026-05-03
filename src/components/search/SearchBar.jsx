@@ -1,102 +1,66 @@
-import{ useState } from "react";
-import InputField from "../ui/InputField";
-import Button from "../ui/Button";
+import Button from "../common/Button";
 import loadingIcon from "../../assets/images/icon-loading.svg";
+import Icon from "../../assets/images/icon-search.svg?react";
+import { useContext, useEffect, useState } from "react";
+import { WeatherContext } from "../../context/WeatherContext";
 
-const SearchBar = ({ cities, setSelectedCity, setNoResults }) => {
+const SearchBar = () => {
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const fakeSearchCity = (input) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const normalizedInput = input
-          .split(",")[0]
-          .trim()
-          .toLowerCase();
+  const { cities, loading, unit, request, search } = useContext(WeatherContext);
 
-        if (normalizedInput === "error") {
-          reject(new Error("Erro simulado da API"));
-          return;
-        }
-
-        const matchedCity = cities.find(
-          (city) =>
-            city.capital.toLowerCase() === normalizedInput ||
-            city.country.toLowerCase() === normalizedInput,
-        );
-
-        resolve(matchedCity || null);
-      }, 300);
-    });
-  };
-
-  const handleCitySelected = (city) => {
-    setInput(`${city.capital}, ${city.country}`);
-    setSelectedCity(city);
-    setNoResults(false);
+  const handleSearch = (city) => {
+    request(city, unit);
     setIsOpen(false);
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 300);
   };
 
-  const handleSearchCity = async () => {
-    if (!input.trim()) return;
+  const handleButton = async () => {
+    const results = await search(input.trim());
 
-    try {
-      setIsLoading(true);
-      setIsOpen(false);
-      setNoResults(false);
-
-      const matchedCity = await fakeSearchCity(input);
-
-      if (!matchedCity) {
-        setNoResults(true);
-        return;
-      }
-
-      setSelectedCity(matchedCity);
-      setInput(`${matchedCity.capital}, ${matchedCity.country}`);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
+    if (results.length === 0) {
+      return;
     }
-  };
 
-  const filter = cities.filter(
-    (city) =>
-      city.capital.toLowerCase().includes(input.toLowerCase()) ||
-      city.country.toLowerCase().includes(input.toLowerCase()),
-  );
+    request(results[0]);
+  };
 
   return (
     <div className="grid grid-cols-1 m-auto md:grid-cols-[8fr_1fr] gap-3 lg:max-w-[654px]">
       <div className="relative">
-        <InputField
-          value={input}
-          onChange={(e) => {
-            const value = e.target.value;
-            setInput(value);
-            setIsOpen(!!value.trim());
-            setNoResults(false);
-          }}
-        />
+        <div className="relative">
+          <input
+            type="text"
+            value={input}
+            onChange={({ target }) => {
+              const value = target.value;
 
-        {isOpen && input.trim() && filter.length > 0 && (
+              setInput(value);
+              setIsOpen(true);
+
+              if (value.trim().length > 2) {
+                search(value);
+              }
+            }}
+            className="w-full h-14 pl-[60px] pr-4 rounded-12 bg-neutral-700"
+            placeholder="Search for a place..."
+          />
+
+          <Icon className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5" />
+        </div>
+
+        {cities && cities.length > 0 && input.trim() && isOpen && (
           <div className="absolute bg-neutral-800 border-[1px] border-neutral-700 w-full rounded-12 p-2 flex flex-col gap-1 mt-[10px] z-10">
-            {filter.map((city, index) => (
+            {cities.map((city, index) => (
               <ul key={index}>
                 <li>
                   <button
                     className="px-2 py-[10px] hover:bg-neutral-700 rounded-8 border-solid border-transparent border-[1px] hover:border-neutral-600 w-full text-start"
-                    onClick={() => handleCitySelected(city)}
+                    onClick={() => {
+                      handleSearch(city);
+                    }}
                   >
-                    {city.capital}, {city.country}, {city.continent}
+                    {city.name}, {city.country}, {city.country_code}
                   </button>
                 </li>
               </ul>
@@ -104,7 +68,7 @@ const SearchBar = ({ cities, setSelectedCity, setNoResults }) => {
           </div>
         )}
 
-        {isLoading && (
+        {loading && isOpen && (
           <div className="absolute bg-neutral-800 border-[1px] border-neutral-700 w-full rounded-12 p-2 flex items-center gap-[10px] mt-[10px] z-10">
             <img src={loadingIcon} alt="loading" className="w-4 h-4" />
             <p>Search in progress</p>
@@ -115,7 +79,7 @@ const SearchBar = ({ cities, setSelectedCity, setNoResults }) => {
       <Button
         className="px-6 py-4 rounded-12 text-preset-5 font-medium"
         color="#4658D9"
-        onClick={handleSearchCity}
+        onClick={() => handleButton()}
       >
         Search
       </Button>

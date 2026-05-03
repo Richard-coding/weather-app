@@ -1,9 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
-import Button from "../ui/Button";
+import { useState, useEffect, useMemo, useContext } from "react";
+import Button from "../common/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Icons from "./Icons";
+import { WeatherContext } from "../../context/WeatherContext";
 
-const HourlyForecast = ({ hourly, hourly_units }) => {
+const HourlyForecast = () => {
+  const { data } = useContext(WeatherContext);
+
   const [selectedDay, setSelectedDay] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -32,7 +35,7 @@ const HourlyForecast = ({ hourly, hourly_units }) => {
 
   const forecastByDay = useMemo(() => {
     return (
-      hourly?.time?.reduce((acc, time, index) => {
+      data?.hourly?.time?.reduce((acc, time, index) => {
         const dayName = getDayName(time);
 
         if (!acc[dayName]) {
@@ -41,14 +44,14 @@ const HourlyForecast = ({ hourly, hourly_units }) => {
 
         acc[dayName].push({
           time,
-          weather_code: hourly.weather_code[index],
-          apparent_temperature: hourly.apparent_temperature[index],
+          weather_code: data?.hourly?.weather_code[index],
+          apparent_temperature: data?.hourly?.apparent_temperature[index],
         });
 
         return acc;
       }, {}) || {}
     );
-  }, [hourly]);
+  }, [data]);
 
   const selectedForecast = forecastByDay[selectedDay] || [];
 
@@ -127,7 +130,7 @@ const HourlyForecast = ({ hourly, hourly_units }) => {
 
             <p className="text-preset-7">
               {item.apparent_temperature}
-              {hourly_units?.apparent_temperature}
+              {data?.hourly_units?.apparent_temperature}
             </p>
           </div>
         );

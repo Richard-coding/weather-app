@@ -1,9 +1,12 @@
-import Home from "./pages/home";
+import { WeatherStorage } from "./context/WeatherContext";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
     <>
-      <Home />
+      <WeatherStorage>
+        <Home />
+      </WeatherStorage>
     </>
   );
 };

@@ -1,7 +1,9 @@
+import { useContext, useEffect } from "react";
+import { WeatherContext } from "../../context/WeatherContext";
 import Icons from "./Icons";
 
-const WeatherInfo = ({ data, selectedCity }) => {
-  if (!data) return null;
+const WeatherInfo = () => {
+  const { data, selected } = useContext(WeatherContext);
 
   const today = data?.daily?.time?.[0]
     ? new Intl.DateTimeFormat("pt-BR", {
@@ -16,7 +18,7 @@ const WeatherInfo = ({ data, selectedCity }) => {
       <div className="bg-mobile md:bg-desktop text-center bg-cover flex flex-wrap items-center md:justify-between gap-4 px-6 py-20 rounded-16">
         <div className="mx-auto md:mx-0">
           <p className="text-preset-4">
-            {selectedCity.capital}, {selectedCity.country}
+            {selected?.name}, {selected?.admin1}
           </p>
           <p className="text-preset-6 opacity-80">{today}</p>
         </div>

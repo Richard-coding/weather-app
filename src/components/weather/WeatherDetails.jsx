@@ -1,5 +1,8 @@
-const WeatherDetails = ({ data }) => {
-  if (!data) return null;
+import { useContext } from "react";
+import { WeatherContext } from "../../context/WeatherContext";
+
+const WeatherDetails = () => {
+  const { data } = useContext(WeatherContext);
 
   const details = [
     {
