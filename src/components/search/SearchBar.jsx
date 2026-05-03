@@ -26,7 +26,10 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 m-auto md:grid-cols-[8fr_1fr] gap-3 lg:max-w-[654px]">
+    <form
+      onSubmit={() => handleButton()}
+      className="grid grid-cols-1 m-auto md:grid-cols-[8fr_1fr] gap-3 lg:max-w-[654px]"
+    >
       <div className="relative">
         <div className="relative">
           <input
@@ -60,7 +63,7 @@ const SearchBar = () => {
                       handleSearch(city);
                     }}
                   >
-                    {city.name}, {city.country}, {city.country_code}
+                    {city.name}, {city.admin1}, {city.admin2} - {city.country_code}
                   </button>
                 </li>
               </ul>
@@ -79,11 +82,10 @@ const SearchBar = () => {
       <Button
         className="px-6 py-4 rounded-12 text-preset-5 font-medium"
         color="#4658D9"
-        onClick={() => handleButton()}
       >
         Search
       </Button>
-    </div>
+    </form>
   );
 };
 
