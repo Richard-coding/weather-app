@@ -111,30 +111,35 @@ const HourlyForecast = () => {
         </div>
       </div>
 
-      {selectedForecast.slice(0, 8).map((item, index) => {
-        const { hour, period } = formatHour(item.time);
+      {selectedForecast
+        .filter((item) => {
+          const hour = new Date(item.time).getHours();
+          return hour >= 12 && hour <= 19;
+        })
+        .map((item) => {
+          const { hour, period } = formatHour(item.time);
 
-        return (
-          <div
-            key={index}
-            className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center max-h-[60px]"
-          >
-            <div className="flex items-center gap-2">
-              <Icons weatherCode={item.weather_code} className="w-10 h-10" />
+          return (
+            <div
+              key={item.time}
+              className="bg-neutral-700 border-neutral-600 border-solid border-[1px] rounded-8 pl-3 pr-4 py-[10px] flex justify-between items-center max-h-[60px]"
+            >
+              <div className="flex items-center gap-2">
+                <Icons weatherCode={item.weather_code} className="w-10 h-10" />
 
-              <div className="flex gap-[6px] text-preset-5">
-                <p>{hour}</p>
-                <p>{period}</p>
+                <div className="flex gap-[6px] text-preset-5">
+                  <p>{hour}</p>
+                  <p>{period}</p>
+                </div>
               </div>
-            </div>
 
-            <p className="text-preset-7">
-              {item.apparent_temperature}
-              {data?.hourly_units?.apparent_temperature}
-            </p>
-          </div>
-        );
-      })}
+              <p className="text-preset-7">
+                {item.apparent_temperature}
+                {data?.hourly_units?.apparent_temperature}
+              </p>
+            </div>
+          );
+        })}
     </section>
   );
 };
