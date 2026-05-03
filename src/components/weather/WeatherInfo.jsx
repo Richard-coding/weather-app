@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { WeatherContext } from "../../context/WeatherContext";
 import Icons from "./Icons";
 
@@ -12,6 +12,7 @@ const WeatherInfo = () => {
         month: "short",
       }).format(new Date(data.daily.time[0]))
     : "";
+    
 
   return (
     <section>
