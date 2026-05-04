@@ -15,7 +15,7 @@ const Forecast = () => {
             className="flex flex-col gap-4 bg-neutral-800 border-solid border-neutral-600 border-[1px] min-w-[84px] px-[10px] py-4 rounded-12"
           >
             <p className="text-preset-6 text-center">
-              {new Intl.DateTimeFormat("pt-BR", {
+              {new Intl.DateTimeFormat("en", {
                 weekday: "short",
               }).format(new Date(data?.daily?.time[index]))}
             </p>
@@ -26,10 +26,10 @@ const Forecast = () => {
 
             <div className="flex justify-around text-preset-6">
               <p className="text-preset-7">
-                {data?.daily.temperature_2m_max[index]}º
+                {data?.daily.temperature_2m_max[index].toFixed(0)}º
               </p>
               <p className="text-preset-7 text-neutral-200">
-                {data?.daily.temperature_2m_min[index]}º
+                {data?.daily.temperature_2m_min[index].toFixed(0)}º
               </p>
             </div>
           </div>

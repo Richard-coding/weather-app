@@ -6,7 +6,7 @@ const WeatherInfo = () => {
   const { data, selected } = useContext(WeatherContext);
 
   const today = data?.daily?.time?.[0]
-    ? new Intl.DateTimeFormat("pt-BR", {
+    ? new Intl.DateTimeFormat("en", {
         weekday: "short",
         day: "2-digit",
         month: "short",
