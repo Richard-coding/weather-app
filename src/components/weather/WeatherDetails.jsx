@@ -39,7 +39,7 @@ const WeatherDetails = () => {
         >
           <p className="mb-6 text-preset-6 text-neutral-200">{item.key}</p>
           <p className="text-preset-3">
-            {item.value} <span>{item.unit}</span>
+            {item.value?.toFixed(2)} <span>{item.unit}</span>
           </p>
         </div>
       ))}
