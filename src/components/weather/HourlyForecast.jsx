@@ -1,14 +1,25 @@
-import { useState, useEffect, useMemo, useContext } from "react";
+import { useState, useEffect, useMemo, useContext, useRef } from "react";
 import Button from "../common/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Icons from "./Icons";
 import { WeatherContext } from "../../context/WeatherContext";
+
+const weekOrder = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
 
 const HourlyForecast = () => {
   const { data } = useContext(WeatherContext);
 
   const [selectedDay, setSelectedDay] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const formatHour = (time) => {
     const date = new Date(time);
@@ -55,16 +66,6 @@ const HourlyForecast = () => {
 
   const selectedForecast = forecastByDay[selectedDay] || [];
 
-  const weekOrder = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-
   const days = weekOrder.filter((day) => forecastByDay[day]);
 
   useEffect(() => {
@@ -81,12 +82,25 @@ const HourlyForecast = () => {
     setIsDropdownOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <section className="flex flex-col gap-4 bg-neutral-800 px-4 py-5 rounded-20">
       <div className="flex justify-between items-center">
         <p className="text-preset-5 font-medium">Hourly forecast</p>
 
-        <div className="relative">
+        <div ref={dropdownRef} className="relative">
           <Button
             onClick={() => setIsDropdownOpen((prev) => !prev)}
             className="flex items-center gap-3 bg-neutral-600 px-4 py-2 text-preset-7 rounded-8"

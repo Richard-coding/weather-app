@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Button from "../common/Button";
 import Unit from "../../assets/images/icon-dropdown.svg?react";
 import Config from "../../assets/images/icon-units.svg?react";
@@ -34,8 +34,8 @@ const options = [
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { unit, setUnit } = useContext(WeatherContext);
+  const dropdownRef = useRef(null);
 
   const handleSelectUnit = (key, value) => {
     setUnit((prevUnit) => ({
@@ -65,8 +65,22 @@ const Dropdown = () => {
     }
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <article className="relative">
+    <article ref={dropdownRef} className="relative">
       <Button className="rounded-8" onClick={() => setIsOpen((prev) => !prev)}>
         <div className="flex items-center gap-[6px] px-[10px] py-2 w-[89px] h-[33px]">
           <Config className="w-[14px] h-[14px]" />
