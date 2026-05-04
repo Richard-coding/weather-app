@@ -11,6 +11,7 @@ const SearchBar = () => {
   const { cities, loading, unit, request, search } = useContext(WeatherContext);
 
   const handleSearch = (city) => {
+    setInput(`${city.name}, ${city.admin1}, ${city.admin2}`);
     request(city, unit);
     setIsOpen(false);
   };
@@ -22,12 +23,16 @@ const SearchBar = () => {
       return;
     }
 
+    setIsOpen(false);
     request(results[0]);
   };
 
   return (
     <form
-      onSubmit={() => handleButton()}
+      onSubmit={(event) => {
+        event.preventDefault();
+        handleButton();
+      }}
       className="grid grid-cols-1 m-auto md:grid-cols-[8fr_1fr] gap-3 lg:max-w-[654px]"
     >
       <div className="relative">
@@ -58,12 +63,12 @@ const SearchBar = () => {
               <ul key={index}>
                 <li>
                   <button
+                    type="button"
                     className="px-2 py-[10px] hover:bg-neutral-700 rounded-8 border-solid border-transparent border-[1px] hover:border-neutral-600 w-full text-start"
-                    onClick={() => {
-                      handleSearch(city);
-                    }}
+                    onClick={() => handleSearch(city)}
                   >
-                    {city.name}, {city.admin1}, {city.admin2} - {city.country_code}
+                    {city.name}, {city.admin1}, {city.admin2} -{" "}
+                    {city.country_code}
                   </button>
                 </li>
               </ul>
