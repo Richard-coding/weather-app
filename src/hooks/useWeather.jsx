@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { weatherApi } from "../services/weatherApi";
+import { geocodeApi } from "../services/geocodeApi";
 
 const defaultCity = {
   name: "Osasco",
@@ -42,16 +43,12 @@ const useWeather = () => {
 
   const search = async (city) => {
     try {
-      const response = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=5&language=pt&format=json`,
-      );
+      const { response, json } = await geocodeApi(city);
 
       if (!response.ok) {
         setCities([]);
         return [];
       }
-
-      const json = await response.json();
 
       if (!json.results) {
         setCities([]);
