@@ -17,8 +17,8 @@ const WeatherInfo = () => {
   return (
     <section>
       <div className="bg-mobile md:bg-desktop text-center bg-cover flex flex-wrap items-center md:justify-between gap-4 px-6 py-20 rounded-16">
-        <div className="mx-auto md:mx-0">
-          <p className="text-preset-4">
+        <div className="text-start mx-auto md:mx-0">
+          <p className="text-preset-4 mb-3">
             {selected?.name}, {selected?.admin1}
           </p>
           <p className="text-preset-6 opacity-80">{today}</p>
@@ -28,9 +28,8 @@ const WeatherInfo = () => {
             weatherCode={data?.current?.weather_code}
             className="w-[120px] h-[120px]"
           />
-          <p className="text-5xl xs:text-preset-1">
-            {data?.current?.temperature_2m}
-            {data?.current_units?.temperature_2m}
+          <p className="text-preset-1 semi-bold">
+            {data?.current?.temperature_2m.toFixed(0)} º
           </p>
         </div>
       </div>

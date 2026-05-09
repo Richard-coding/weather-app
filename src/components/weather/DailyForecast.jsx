@@ -24,7 +24,7 @@ const Forecast = () => {
               className="h-[60px] w-[60px] mx-auto"
             />
 
-            <div className="flex justify-around text-preset-6">
+            <div className="flex justify-between text-preset-6">
               <p className="text-preset-7">
                 {data?.daily.temperature_2m_max[index].toFixed(0)}º
               </p>

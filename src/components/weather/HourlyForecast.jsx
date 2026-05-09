@@ -148,8 +148,7 @@ const HourlyForecast = () => {
               </div>
 
               <p className="text-preset-7">
-                {item.apparent_temperature}
-                {data?.hourly_units?.apparent_temperature}
+                {item.apparent_temperature.toFixed(0)}º
               </p>
             </div>
           );
